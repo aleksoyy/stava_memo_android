@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.MemoPage">
+
+    <EditText
+        android:id="@+id/memoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0000"
+        android:hint="Memo Title"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:textSize="25sp"
+        tools:ignore="RtlSymmetry"
+        android:cursorVisible="true"/>
+    <TextView
+        android:id="@+id/memoDate"
+        android:layout_width="match_parent"
+        android:hint="0000/01/01"
+        android:paddingStart="20dp"
+        android:layout_below="@id/memoTitle"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlSymmetry" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/memoDate"
+        android:background="@color/gray"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_below="@id/memoDate"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/memoContain"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:hint="Type your story here..."
+            android:layout_height="wrap_content"
+            android:background="#0000"
+            android:cursorVisible="true"/>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        app:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_save_alt_24"
+        android:clickable="true"
+        android:focusable="true" />
+
+</RelativeLayout>
