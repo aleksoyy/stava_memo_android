@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/Users/thano/Stava/app/src/main/res/drawable/add_icon.xml" value="0.1955" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/drawable/add_white.xml" value="0.111" />
+        <entry key="..\:/Users/thano/Stava/app/src/main/res/drawable/splashscreen_background.xml" value="0.1825" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/activity_login_page.xml" value="0.17255434782608695" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/activity_memo_page.xml" value="0.33" />
+        <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/activity_new_memo.xml" value="0.1" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/activity_register_page.xml" value="0.17255434782608695" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/list_memo.xml" value="0.17255434782608695" />
         <entry key="..\:/Users/thano/Stava/app/src/main/res/layout/user_model.xml" value="0.17255434782608695" />

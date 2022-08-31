@@ -27,15 +27,18 @@ public interface APIRequestData {
     @FormUrlEncoded
     @POST("getmemospesific.php")
     Call<ResponseModel> getSpecMemo(
-            @Field("mid") int mid
+            @Field("mid") int mid,
+            @Field("uid") int uid
     );
 
     @FormUrlEncoded
     @POST("updatememo.php")
     Call<ResponseModel> updatMemoData(
+            @Field("mid") int mid,
             @Field("mtitle") String mtitle,
             @Field("mdate") String mdate,
-            @Field("mcont") String mcont
+            @Field("mcont") String mcont,
+            @Field("uid") int uid
     );
 
     @FormUrlEncoded

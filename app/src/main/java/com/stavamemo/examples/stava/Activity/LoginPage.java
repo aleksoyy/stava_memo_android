@@ -76,7 +76,7 @@ public class LoginPage extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(LoginPage.this, "Login Failed !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginPage.this, "Login Failed !"+t.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

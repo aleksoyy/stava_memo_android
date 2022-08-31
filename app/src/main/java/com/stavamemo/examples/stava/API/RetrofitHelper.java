@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper{
-    private static final String baseUrl = "http://10.0.2.2/memoapp/";
+    private static final String baseUrl = "http://10.0.2.2/stavamemo/";
     private static Retrofit retrofit;
 
     public static Retrofit conRetrofit(){

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_add = (FloatingActionButton) findViewById(R.id.btn_addMemo);
         btn_add.setOnClickListener(view -> {
-            Intent addIntent = new Intent(MainActivity.this, MemoPage.class);
+            Intent addIntent = new Intent(MainActivity.this, NewMemo.class);
             addIntent.putExtra("userId", userId);
             startActivity(addIntent);
         });

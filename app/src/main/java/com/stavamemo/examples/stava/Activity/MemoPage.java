@@ -2,6 +2,7 @@ package com.stavamemo.examples.stava.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import com.stavamemo.examples.stava.API.RetrofitHelper;
 import com.stavamemo.examples.stava.Model.ResponseModel;
 import com.stavamemo.examples.stava.R;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,17 +35,14 @@ import retrofit2.Response;
 
 public class MemoPage extends AppCompatActivity {
 
-    TextView mid, userid, memoDate;
+    TextView memoid, userid, memoDate;
     EditText memoTitle, memoContains;
 
-    String mdate, mtitle, mcont;
-    int usid, userId;
-    int exuid, exmid;
-    String exmtitle, exmdate, exmcont;
+    String memodate, mdate, mtitle, mcont;
+    String newMdate, newMtitle, newMcont;
+    int uid, mid;
 
     FloatingActionButton btn_save;
-
-    String tempTitle, tempCont;
 
     private Timer timer = new Timer();
     private final long DELAY = 1000; // in ms
@@ -56,63 +55,35 @@ public class MemoPage extends AppCompatActivity {
         setContentView(R.layout.activity_memo_page);
 
         Bundle bundle = getIntent().getExtras();
-
-        //From AddButton MainActivity
-        userId = bundle.getInt("userId");
-
-        //From AdapterData
-        exmid = bundle.getInt("mid");
-        exuid = bundle.getInt("uid");
-        exmtitle = bundle.getString("mtitle");
-        exmdate = bundle.getString("mdate");
-        exmcont = bundle.getString("mcont");
-
+        if (bundle != null){
+            //From AdapterData
+            mid = Integer.parseInt(bundle.getString("mid"));
+            uid = Integer.parseInt(bundle.getString("uid"));
+        }
         //Get layout contain
-        mid = (TextView) findViewById(R.id.memoId);
+        memoid = (TextView) findViewById(R.id.memoId);
         userid = (TextView) findViewById(R.id.uid);
         memoDate = (TextView) findViewById(R.id.memoDate);
         memoTitle = (EditText) findViewById(R.id.memoTitle);
         memoContains = (EditText) findViewById(R.id.memoContain);
         btn_save = (FloatingActionButton) findViewById(R.id.btn_save);
 
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-
-        mtitle = memoTitle.getText().toString();
-
-        //Setting Date
-        mdate = formattedDate;
-        memoDate.setText(mdate);
-
-        mcont = memoContains.getText().toString();
-        usid = userId;
-
-        if (exmid == 0 && exuid == 0 && exmtitle.equals("") && exmdate.equals("") && exmcont.equals("")){
-            if (mtitle.trim().equals("") && mcont.trim().equals("")){
-                memoTitle.setHint("Title Memo");
-                memoContains.setHint("Hello you can type anything you want here !");
-            } else if(mtitle.trim().equals("")){
-                memoTitle.setHint("Title Memo");
-            } else if(mcont.trim().equals("")) {
-                memoTitle.setHint("Hello you can type anything you want here !");
-            }
-        }else{
-            mid.setText(exmid);
-            userid.setText(exuid);
-            memoTitle.setText(exmtitle);
-            memoContains.setText(exmcont);
-        }
+        getSpecMemo();
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                String formattedDate = df.format(c);
+                memodate = formattedDate;
 
-                if (exmid == 0 && exuid == 0 && exmtitle.equals("") && exmdate.equals("") && exmcont.equals("")) {
-                    createMemo();
-                }else{
-                    updateMemo();
-                }
+                newMtitle = memoTitle.getText().toString();
+                newMdate = memodate;
+                newMcont = memoContains.getText().toString();
+
+                memoDate.setText(memodate);
+                updateMemo();
             }
         });
 
@@ -120,38 +91,67 @@ public class MemoPage extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (memoTitle.getText() != null  || memoContains.getText() != null ) {
-                    updateMemo();
-                }
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                String formattedDate = df.format(c);
+                memodate = formattedDate;
+
+                newMtitle = memoTitle.getText().toString();
+                newMdate = memodate;
+                newMcont = memoContains.getText().toString();
+
+                memoDate.setText(memodate);
+                updateMemo();
             }
         }, 1000);
     }
 
-    private void createMemo(){
+    public void onBackPressed(){
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        memodate = formattedDate;
+
+        newMtitle = memoTitle.getText().toString();
+        newMdate = memodate;
+        newMcont = memoContains.getText().toString();
+
+        memoDate.setText(memodate);
+        updateMemo();
+        Intent backIntent = new Intent(MemoPage.this, MainActivity.class);
+        startActivity(backIntent);
+    }
+
+    private void getSpecMemo(){
         APIRequestData requestData = RetrofitHelper.conRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> uploadData = requestData.uploadDataModel(mtitle, mdate, mcont, usid);
-        uploadData.enqueue(new Callback<ResponseModel>() {
+        Call<ResponseModel> getSpecMemo = requestData.getSpecMemo(mid, uid);
+        getSpecMemo.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 int code = response.body().getCode();
                 String message = response.body().getMessage();
-               }
+
+                memoTitle.setText(response.body().getData().get(0).getMtitle());
+                memoContains.setText(response.body().getData().get(0).getMcont());
+                memoDate.setText(response.body().getData().get(0).getMdate());
+            }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Memo Failed to Add"+t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MemoPage.this, "Memo Not Found : "+t.getMessage() , Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void updateMemo(){
-        APIRequestData requestData = RetrofitHelper.conRetrofit().create(APIRequestData.class);
-        Call<ResponseModel> updateMemoData = requestData.updatMemoData(mtitle, mdate, mcont);
+        APIRequestData updateData = RetrofitHelper.conRetrofit().create(APIRequestData.class);
+        Call<ResponseModel> updateMemoData = updateData.updatMemoData(mid, newMtitle, newMdate, newMcont, uid);
         updateMemoData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 int code = response.body().getCode();
                 String message = response.body().getMessage();
+                Toast.makeText(MemoPage.this, "Memo Saved !", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -33,7 +33,7 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.HolderData> {
     private Context context;
     private List<MemoModel> memoList;
     private int mid;
-    private int dumdata = 1;
+    private int userid;
 
     public AdapterData(Context context, List<MemoModel> memoList) {
         this.context = context;
@@ -79,8 +79,10 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.HolderData> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mid = Integer.parseInt(memoId.getText().toString());
-                    getSpecMemo();
+                    Intent oldMemoIntent = new Intent(view.getContext(), MemoPage.class);
+                    oldMemoIntent.putExtra("mid", memoId.getText().toString());
+                    oldMemoIntent.putExtra("uid", uid.getText().toString());
+                    view.getContext().startActivity(oldMemoIntent);
                 }
             });
 
@@ -118,37 +120,6 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.HolderData> {
                 @Override
                 public void onFailure(Call<ResponseModel> call, Throwable t) {
                     Toast.makeText(context, "Delete Failed : "+t.getMessage() , Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        private void getSpecMemo(){
-            APIRequestData requestData = RetrofitHelper.conRetrofit().create(APIRequestData.class);
-            Call<ResponseModel> getSpecMemo = requestData.getSpecMemo(mid);
-            getSpecMemo.enqueue(new Callback<ResponseModel>() {
-                @Override
-                public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                    int code = response.body().getCode();
-                    String message = response.body().getMessage();
-
-                    Toast.makeText(context, "Memo Found", Toast.LENGTH_SHORT).show();
-
-                    Bundle extras = new Bundle();
-                    Toast.makeText(context, response.body().getMid(), Toast.LENGTH_SHORT).show();
-//                    extras.putInt("mid", response.body().getMid());
-//                    extras.putString("mtitle", response.body().getMtitle());
-//                    extras.putString("mdate", response.body().getMdate());
-//                    extras.putString("mcont", response.body().getMcont());
-//                    extras.putInt("uid", response.body().getUid());
-//                    Intent memoPageIntent = new Intent(itemView.getContext(), MemoPage.class);
-//                    memoPageIntent.putExtras(extras);
-//                    itemView.getContext().startActivity(memoPageIntent);
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseModel> call, Throwable t) {
-                    Toast.makeText(context, "Memo Not Found : "+t.getMessage() , Toast.LENGTH_SHORT).show();
                 }
             });
         }
