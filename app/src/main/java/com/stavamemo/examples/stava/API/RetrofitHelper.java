@@ -1,13 +1,11 @@
 package com.stavamemo.examples.stava.API;
 
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper{
-    private static final String baseUrl = "http://10.0.2.2/stavamemo/";
+    private static final String baseUrl = "https://portowebyosua.000webhostapp.com/stavamemo/";
     private static Retrofit retrofit;
 
     public static Retrofit conRetrofit(){
